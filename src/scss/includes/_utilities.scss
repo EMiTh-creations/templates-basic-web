@@ -1,0 +1,12 @@
+// https://sass-lang.com/documentation/values/maps
+@each $name, $colour in $colours {
+    .text__colour--#{$name} {
+        color: $colour;
+    }
+}
+
+@each $name, $colour in $colours {
+    .background__colour--#{$name} {
+        background-color: $colour;
+    }
+}
