@@ -14,6 +14,9 @@
 // The utilities rely on the colours and possibly the mixins, and so must come after.
 @import "includes/utilities";
 
+// The container relies on the mixins.
+@import "includes/container";
+
 // ###############################################################
 // # Do not modify the imports above
 // ###############################################################
