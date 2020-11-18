@@ -1,0 +1,172 @@
+@import "main";
+
+.navbar {
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    color: black;
+
+    // Need to add additional styles to the container, as this will
+    // be the direct parent of most of the other elements.
+    .container {
+        padding: 0.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    // This is the brand and the hamburger.
+    &__group {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    &__brand {
+        font-size: 2rem;
+    }
+
+    &__hamburger {
+        font-size: 2rem;
+        padding: 0.5rem 1rem;
+        line-height: normal;
+        cursor: pointer;
+    }
+
+    &__links {
+        display: none;
+        text-align: center;
+        width: 100%;
+
+        &.active {
+            display: block;
+        }
+
+        .navbar__link {
+            // This is the spacing between each of the links
+            margin: 1.5rem 0;
+
+            // All of the <a> tags inside .navbar__link
+            // this includes all of the sub-menu links as well.
+            & a {
+                // This makes the link bigger so it's easier to click
+                padding: 0.5rem 1rem;
+
+                &:hover,
+                &:hover::after {
+                    color: $primary;
+                }
+            }
+
+            &.navbar__link--has-submenu {
+                // Turn the cursor into a pointer when
+                // hovering over the subnav link.
+                cursor: pointer;
+
+                > a::after {
+                    // This is the down arrow for the submenu
+                    font-family: "Font Awesome 5 Free";
+                    font-size: 0.8rem;
+                    line-height: 16px;
+                    font-weight: 900;
+                    content: "\f078";
+                    padding-left: 5px;
+                }
+
+                // When the sub-nav is active
+                &.navbar__sub-nav-active {
+                    background-color: $grey;
+
+                    > a::after {
+                        // Flip the down arrow to an up arrow when
+                        // the sub-nav is active
+                        content: "\f077";
+                    }
+
+                    > .navbar__sub-nav {
+                        display: block;
+                    }
+                }
+
+                .navbar__sub-nav {
+                    display: none;
+
+                    .navbar__sub-link {
+                        // This is the spacing between the elements
+                        margin: 1.5rem 0;
+
+                        & a {
+                            // This makes the link bigger so it's easier to click
+                            padding: 0.5rem 1rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@include respond-to("x-large") {
+    .navbar {
+        .container {
+            // Switch to a row, as we want all the items in a nice <-->
+            flex-direction: row;
+        }
+
+        &__hamburger {
+            visibility: hidden;
+            display: none;
+        }
+
+        &__links {
+            display: flex;
+
+            .navbar__link {
+                // This is the spacing between the elements
+                margin: 0rem 1rem;
+
+                // Remove the margin for the element on the right
+                // as this element should be all the way up against
+                // the right side of the screen
+                &:last-of-type {
+                    margin-right: 0;
+                }
+
+                position: relative;
+
+                white-space: nowrap;
+
+                &.navbar__link--has-submenu {
+                    &.navbar__sub-nav-active {
+                        background-color: white;
+
+                        > .navbar__sub-nav {
+                            cursor: auto;
+
+                            // Put the subnav below the parent link
+                            position: absolute;
+                            left: 0;
+                            top: 2rem;
+
+                            display: flex;
+                            flex-direction: column;
+
+                            background: white;
+                            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+                            padding: 0rem 1.5rem;
+
+                            .navbar__sub-link {
+                                margin: 1rem 0;
+
+                                > a {
+                                    text-align: center;
+                                    white-space: nowrap;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
