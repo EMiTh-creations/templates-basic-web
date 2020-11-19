@@ -1,20 +1,20 @@
-@import "main";
-
 .navbar {
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
+        rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
     color: black;
 
-    // Need to add additional styles to the container, as this will
-    // be the direct parent of most of the other elements.
-    .container {
-        padding: 0.5rem;
+    // The direct parent of every element
+    &__nav {
         display: flex;
         flex-direction: column;
         align-items: center;
+
+        padding: 1rem;
     }
 
-    // This is the brand and the hamburger.
-    &__group {
+    // This is a grouping of the brand text/image and
+    // the mobile hamburger menu
+    &__mobile {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -22,6 +22,7 @@
         width: 100%;
     }
 
+    // This is the brand text/image
     &__brand {
         font-size: 2rem;
     }
@@ -33,7 +34,7 @@
         cursor: pointer;
     }
 
-    &__links {
+    &__items {
         display: none;
         text-align: center;
         width: 100%;
@@ -41,75 +42,63 @@
         &.active {
             display: block;
         }
+    }
 
-        .navbar__link {
-            // This is the spacing between each of the links
-            margin: 1.5rem 0;
+    &__item {
+        margin: 1.5rem 0; // vertical spacing between items
 
-            // All of the <a> tags inside .navbar__link
-            // this includes all of the sub-menu links as well.
-            & a {
-                // This makes the link bigger so it's easier to click
-                padding: 0.5rem 1rem;
+        &--has-dropdown {
+            cursor: pointer; // turn the cursor into a pointer when hovering over the dropdown link
+        }
+    }
 
-                &:hover,
-                &:hover::after {
-                    color: $primary;
-                }
+    // This includes all of the dropdown links as well
+    &__link {
+        padding: 0.5rem 1rem; // this makes the link bigger so it's easier to click
+
+        &:hover,
+        &:hover::after {
+            color: gold;
+        }
+
+        &--dropdown::after {
+            // This is the down chevron for the dropdown
+            font-family: "Font Awesome 5 Free";
+            font-size: 0.8rem;
+            line-height: 16px;
+            font-weight: 900;
+            content: "\f078"; // down chevron
+            padding-left: 5px;
+        }
+    }
+
+    &__dropdown {
+        display: none;
+        padding: 0.25rem;
+
+        &--active {
+            background-color: $grey;
+
+            > .navbar__link--dropdown::after {
+                content: "\f077"; // down chevron
             }
 
-            &.navbar__link--has-submenu {
-                // Turn the cursor into a pointer when
-                // hovering over the subnav link.
-                cursor: pointer;
-
-                > a::after {
-                    // This is the down arrow for the submenu
-                    font-family: "Font Awesome 5 Free";
-                    font-size: 0.8rem;
-                    line-height: 16px;
-                    font-weight: 900;
-                    content: "\f078";
-                    padding-left: 5px;
-                }
-
-                // When the sub-nav is active
-                &.navbar__sub-nav-active {
-                    background-color: $grey;
-
-                    > a::after {
-                        // Flip the down arrow to an up arrow when
-                        // the sub-nav is active
-                        content: "\f077";
-                    }
-
-                    > .navbar__sub-nav {
-                        display: block;
-                    }
-                }
-
-                .navbar__sub-nav {
-                    display: none;
-
-                    .navbar__sub-link {
-                        // This is the spacing between the elements
-                        margin: 1.5rem 0;
-
-                        & a {
-                            // This makes the link bigger so it's easier to click
-                            padding: 0.5rem 1rem;
-                        }
-                    }
-                }
+            > .navbar__dropdown {
+                display: block;
             }
         }
+    }
+
+    &__sub-item {
+        // This is the spacing between the elements
+        margin: 1rem 0;
     }
 }
 
 @include respond-to("x-large") {
     .navbar {
-        .container {
-            // Switch to a row, as we want all the items in a nice <-->
+        // The direct parent of every element
+        &__nav {
             flex-direction: row;
         }
 
@@ -118,55 +107,52 @@
             display: none;
         }
 
-        &__links {
+        &__items {
             display: flex;
+        }
 
-            .navbar__link {
-                // This is the spacing between the elements
-                margin: 0rem 1rem;
+        &__item {
+            margin: 0rem 1rem; // horizontal spacing between items
 
-                // Remove the margin for the element on the right
-                // as this element should be all the way up against
-                // the right side of the screen
-                &:last-of-type {
-                    margin-right: 0;
-                }
-
-                position: relative;
-
-                white-space: nowrap;
-
-                &.navbar__link--has-submenu {
-                    &.navbar__sub-nav-active {
-                        background-color: white;
-
-                        > .navbar__sub-nav {
-                            cursor: auto;
-
-                            // Put the subnav below the parent link
-                            position: absolute;
-                            left: 0;
-                            top: 2rem;
-
-                            display: flex;
-                            flex-direction: column;
-
-                            background: white;
-                            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-                            padding: 0rem 1.5rem;
-
-                            .navbar__sub-link {
-                                margin: 1rem 0;
-
-                                > a {
-                                    text-align: center;
-                                    white-space: nowrap;
-                                }
-                            }
-                        }
-                    }
-                }
+            // Remove the margin for the element on the right
+            // as this element should be all the way up against
+            // the right side of the screen
+            &:last-of-type {
+                margin-right: 0;
             }
+
+            position: relative; // this allows us to poisition the dropdowns below the items
+
+            // white-space: nowrap; // do not wrap any text
+        }
+
+        &__dropdown--active {
+            background-color: white;
+
+            > .navbar__dropdown {
+                cursor: auto;
+
+                // Put the subnav below the parent link
+                position: absolute;
+                left: 0;
+                top: 2rem;
+
+                display: flex;
+                flex-direction: column;
+
+                background: white;
+                box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+                padding: 0rem 1.5rem;
+            }
+        }
+
+        &__sub-item {
+            margin: 1rem 0;
+        }
+
+        &__link {
+            text-align: center;
+            white-space: nowrap; // do not wrap any text
         }
     }
 }
