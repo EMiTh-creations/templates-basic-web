@@ -46,15 +46,12 @@
 
     &__item {
         margin: 1.5rem 0; // vertical spacing between items
-
-        &--has-dropdown {
-            cursor: pointer; // turn the cursor into a pointer when hovering over the dropdown link
-        }
     }
 
     // This includes all of the dropdown links as well
     &__link {
         padding: 0.5rem 1rem; // this makes the link bigger so it's easier to click
+        cursor: pointer; // turn the cursor into a pointer when hovering over a link
 
         &:hover,
         &:hover::after {
@@ -130,8 +127,6 @@
             background-color: white;
 
             > .navbar__dropdown {
-                cursor: auto;
-
                 // Put the subnav below the parent link
                 position: absolute;
                 left: 0;
