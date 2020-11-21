@@ -14,21 +14,21 @@ function toggleMenu() {
 }
 
 function toggleItem() {
-    if (this.classList.contains("navbar__dropdown--active")) {
-        this.classList.remove("navbar__dropdown--active");
-    } else if (menu.querySelector(".navbar__dropdown--active")) {
-        menu.querySelector(".navbar__dropdown--active").classList.remove("navbar__dropdown--active");
-        this.classList.add("navbar__dropdown--active");
+    if (this.classList.contains("navbar__item--dropdown-active")) {
+        this.classList.remove("navbar__item--dropdown-active");
+    } else if (menu.querySelector(".navbar__item--dropdown-active")) {
+        menu.querySelector(".navbar__item--dropdown-active").classList.remove("navbar__item--dropdown-active");
+        this.classList.add("navbar__item--dropdown-active");
     } else {
-        this.classList.add("navbar__dropdown--active");
+        this.classList.add("navbar__item--dropdown-active");
     }
 }
 
 function closeSubmenu(e) {
     let isClickInside = menu.contains(e.target);
 
-    if (!isClickInside && menu.querySelector(".navbar__dropdown--active")) {
-        menu.querySelector(".navbar__dropdown--active").classList.remove("navbar__dropdown--active");
+    if (!isClickInside && menu.querySelector(".navbar__item--dropdown-active")) {
+        menu.querySelector(".navbar__item--dropdown-active").classList.remove("navbar__item--dropdown-active");
     }
 }
 

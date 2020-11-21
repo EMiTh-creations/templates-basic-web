@@ -1,0 +1,86 @@
+.section {
+    padding: 3rem 1.25rem;
+
+    &__two-halves {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__half {
+        & + .section__half {
+            margin-top: 1rem;
+        }
+    }
+
+    &__title {
+        // section__title
+        font-size: 3rem;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    &__subtitle {
+        // section__subtitle
+        font-size: 1.5rem;
+        margin: 2rem 0;
+    }
+
+    &__title + &__subtitle {
+        // section__title <followed by> section__subtitle
+        margin-top: -1.5rem;
+    }
+
+    &__text {
+        // section__text
+        font-size: 1.1rem;
+    }
+
+    &__text + &__text {
+        // section__text <followed by> section__text
+        margin: 1.5rem 0;
+    }
+
+    &__image {
+        // section__image
+        align-self: center;
+
+        &--rounded {
+            border-radius: 50%;
+        }
+    }
+
+    &__list {
+        list-style: none;
+        margin-left: 3rem;
+
+        li {
+            margin-top: 1rem;
+        }
+
+        li::before {
+            content: "\2022";
+            color: $yellow;
+            font-weight: bold;
+            display: inline-block;
+            width: 1rem;
+            margin-left: -1rem;
+        }
+    }
+}
+
+@include respond-to("large") {
+    .section {
+        &__two-halves {
+            flex-direction: row;
+            align-items: center;
+        }
+
+        &__half {
+            width: 50%;
+
+            & + .section__half {
+                margin-left: 1rem;
+            }
+        }
+    }
+}

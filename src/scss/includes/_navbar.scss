@@ -3,8 +3,8 @@
         rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
     color: black;
 
-    // The direct parent of every element
     &__nav {
+        // navbar__nav
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -12,9 +12,10 @@
         padding: 1rem;
     }
 
-    // This is a grouping of the brand text/image and
-    // the mobile hamburger menu
     &__mobile {
+        // navbar__mobile
+        // this is a grouping of the brand text/image and
+        // the mobile hamburger menu
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -22,12 +23,14 @@
         width: 100%;
     }
 
-    // This is the brand text/image
     &__brand {
-        font-size: 2rem;
+        // navbar__brand
+        max-width: 14rem;
+        min-width: 12rem;
     }
 
     &__hamburger {
+        // navbar__hamburger
         font-size: 2rem;
         padding: 0.5rem 1rem;
         line-height: normal;
@@ -35,28 +38,54 @@
     }
 
     &__items {
+        // navbar__items
         display: none;
         text-align: center;
         width: 100%;
+        margin: 0.5rem 0;
 
         &.active {
+            // navbar__items active
             display: block;
         }
     }
 
     &__item {
-        margin: 1.5rem 0; // vertical spacing between items
+        // navbar__item
+        margin: 1rem 0.5rem;
+        padding: 0.25rem 0.25rem;
+
+        &:hover,
+        &:hover::after,
+        &.active,
+        &--dropdown-active {
+            background-color: $primary;
+            color: $white;
+        }
+
+        &--dropdown-active {
+            // navbar__item--dropdown-active
+            > .navbar__link--dropdown::after {
+                content: "\f077"; // down chevron
+            }
+
+            > .navbar__dropdown {
+                display: block;
+                // transition: 0.5s;
+            }
+        }
+
+        &.navbar__item--sub {
+            // navbar__item navbar__item--sub
+            margin: 0.5rem 0; // this is the spacing between the elements
+        }
     }
 
     // This includes all of the dropdown links as well
     &__link {
+        // navbar__link
         padding: 0.5rem 1rem; // this makes the link bigger so it's easier to click
         cursor: pointer; // turn the cursor into a pointer when hovering over a link
-
-        &:hover,
-        &:hover::after {
-            color: gold;
-        }
 
         &--dropdown::after {
             // This is the down chevron for the dropdown
@@ -70,25 +99,9 @@
     }
 
     &__dropdown {
+        // navbar__dropdown
         display: none;
-        padding: 0.25rem;
-
-        &--active {
-            background-color: $grey;
-
-            > .navbar__link--dropdown::after {
-                content: "\f077"; // down chevron
-            }
-
-            > .navbar__dropdown {
-                display: block;
-            }
-        }
-    }
-
-    &__sub-item {
-        // This is the spacing between the elements
-        margin: 1rem 0;
+        padding: 1rem 0;
     }
 }
 
@@ -96,20 +109,25 @@
     .navbar {
         // The direct parent of every element
         &__nav {
+            // navbar__nav
             flex-direction: row;
         }
 
         &__hamburger {
+            // navbar__hamburger
             visibility: hidden;
             display: none;
         }
 
         &__items {
+            // navbar__items
             display: flex;
+            margin: 0;
         }
 
         &__item {
-            margin: 0rem 1rem; // horizontal spacing between items
+            // navbar__item
+            margin: 0rem 0.5rem;
 
             // Remove the margin for the element on the right
             // as this element should be all the way up against
@@ -120,34 +138,33 @@
 
             position: relative; // this allows us to poisition the dropdowns below the items
 
-            // white-space: nowrap; // do not wrap any text
-        }
-
-        &__dropdown--active {
-            background-color: white;
-
-            > .navbar__dropdown {
-                // Put the subnav below the parent link
-                position: absolute;
-                left: 0;
-                top: 2rem;
-
-                display: flex;
-                flex-direction: column;
-
-                background: white;
-                box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-                padding: 0rem 1.5rem;
+            &--dropdown-active {
+                // navbar__item--dropdown-active
+                > .navbar__dropdown {
+                    display: flex;
+                }
             }
         }
 
-        &__sub-item {
-            margin: 1rem 0;
-        }
-
         &__link {
+            // navbar__link
             text-align: center;
             white-space: nowrap; // do not wrap any text
+        }
+
+        &__dropdown {
+            // navbar__dropdown
+            position: absolute; // put the subnav below the parent link
+            left: 0;
+            top: 2.5rem;
+
+            background-color: $white;
+            color: $black;
+
+            flex-direction: column;
+
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+            padding: 0rem 1.5rem;
         }
     }
 }
