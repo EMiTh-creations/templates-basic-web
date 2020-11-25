@@ -2,6 +2,22 @@
     padding: 3rem 1.25rem;
 
     &__two-halves {
+        // usage:
+        // <section class="section">
+        //     <div class="container">
+        //         <h1 class="section__title">TITLE GOES HERE</h1>
+
+        //         <div class="section__two-halves">
+        //             <div class="section__half place-items-center">
+        //                 <img class="section__image section__image--rounded" src="/images/IMAGE.JPG" alt="">
+        //             </div>
+        //
+        //             <div class="section__half">
+        //                 <p>TEXT GOES HERE</p>
+        //             </div>
+        //         </div>
+        //     </div>
+        // </section>
         display: flex;
         flex-direction: column;
     }
@@ -79,6 +95,7 @@
             width: 50%;
 
             & + .section__half {
+                margin-top: 0;
                 margin-left: 1rem;
             }
         }
