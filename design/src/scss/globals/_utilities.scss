@@ -7,24 +7,9 @@
     }
 }
 
-.text__ {
-    &italic {
-        font-style: italic;
-    }
-
-    &underline {
-        text-decoration: underline;
-    }
-}
-
 // Background
 @each $name, $colour in $colours {
     .background__colour--#{$name} {
         background-color: $colour;
     }
-}
-
-.place-items-center {
-    display: grid;
-    place-items: center;
 }

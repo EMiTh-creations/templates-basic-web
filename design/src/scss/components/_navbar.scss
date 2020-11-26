@@ -105,7 +105,7 @@
     }
 }
 
-@include respond-to("large", max) {
+@include max-screen("large") {
     .navbar {
         &__items {
             // navbar__items
@@ -130,7 +130,7 @@
     }
 }
 
-@include respond-to("large") {
+@include min-screen("large") {
     .navbar {
         &__nav {
             // navbar__nav
