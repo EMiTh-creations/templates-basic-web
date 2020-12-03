@@ -1,4 +1,9 @@
 version: "3"
+
+networks:
+  nginx-proxy:
+    external: true
+
 services:
   web:
     build:
@@ -10,8 +15,5 @@ services:
       - LETSENCRYPT_HOST=url.emith.dev
       - LETSENCRYPT_EMAIL=webmaster@emith.dev
     restart: unless-stopped
-
-networks:
-  default:
-    external:
-      name: nginx-proxy
+    networks:
+      - nginx-proxy
