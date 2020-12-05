@@ -7,7 +7,7 @@ networks:
 services:
   web:
     build:
-      context: .
+      context: ./www
       dockerfile: ./Dockerfile
     environment:
       - VIRTUAL_PORT=80

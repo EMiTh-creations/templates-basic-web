@@ -7,4 +7,4 @@
 FROM nginx:alpine
 
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
-COPY ./live /usr/share/nginx/html
+COPY ./public_html /usr/share/nginx/html
