@@ -5,7 +5,7 @@ networks:
     external: true
 
 services:
-  web:
+  nginx:
     build:
       context: ./www
       dockerfile: ./Dockerfile
