@@ -1,7 +1,7 @@
 version: "3"
 
 networks:
-  nginx-proxy:
+  traefik-proxy:
     external: true
 
 services:
@@ -9,11 +9,13 @@ services:
     build:
       context: ./www
       dockerfile: ./Dockerfile
-    environment:
-      - VIRTUAL_PORT=80
-      - VIRTUAL_HOST=url.emith.dev
-      - LETSENCRYPT_HOST=url.emith.dev
-      - LETSENCRYPT_EMAIL=webmaster@emith.dev
+    labels:
+      - traefik.enable=true
+      ## Routers Rules
+      - traefik.http.routers.<service>-rtr.rule=Host(`$DOMAINNAME`)
+      - traefik.http.routers.<service>-rtr.tls=true
+      - traefik.http.routers.<service>-rtr.tls.certresolver=letsencrypt
+      ## Middlewares Rules
     restart: unless-stopped
     networks:
-      - nginx-proxy
+      - traefik-proxy
