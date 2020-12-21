@@ -12,7 +12,7 @@ services:
     labels:
       - traefik.enable=true
       ## Routers Rules
-      - traefik.http.routers.<service>-rtr.rule=Host(`$DOMAINNAME`)
+      - traefik.http.routers.<service>-rtr.rule=Host(`www.$DOMAINNAME`)
       - traefik.http.routers.<service>-rtr.tls=true
       - traefik.http.routers.<service>-rtr.tls.certresolver=letsencrypt
       ## Middlewares Rules
