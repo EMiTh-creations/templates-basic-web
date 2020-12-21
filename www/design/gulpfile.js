@@ -1,139 +1,187 @@
-var gulp = require("gulp");
-var del = require("del");
-var plugins = require("gulp-load-plugins")();
-var autoprefixer = require("autoprefixer");
-var cssnano = require("cssnano");
-var cssmqpacker = require("css-mqpacker");
-var pngquant = require("imagemin-pngquant");
-var mozjpeg = require("imagemin-mozjpeg");
-var browserSync = require("browser-sync").create();
+const gulp = require("gulp");
 
-// define source and destination paths
-var paths = {
+// This import is used to delete folders
+const del = require("del");
+
+// This import detects if files have changed
+const changed = require("gulp-changed");
+
+// The following imports are for the SCSS/CSS
+const sass = require("gulp-sass");
+const postcss = require("gulp-postcss");
+// The following imports are the processors for postcss
+const autoprefixer = require("autoprefixer");
+const cssnano = require("cssnano");
+const cssmqpacker = require("@hail2u/css-mqpacker");
+
+// The following imports are for the Javascript
+const concat = require("gulp-concat");
+const terser = require("gulp-terser");
+
+// The following imports are for the images
+const cache = require("gulp-cache");
+const imagemin = require("gulp-imagemin");
+const giflossy = require("imagemin-giflossy");
+const zopfli = require("imagemin-zopfli");
+const mozjpeg = require("imagemin-mozjpeg");
+const pngquant = require("imagemin-pngquant");
+
+// For serving the content
+const browserSync = require("browser-sync");
+
+const paths = {
     styles: {
-        src: "./src/scss/**/*.scss",
-        dest: "./dist/css",
+        src: "src/scss/**/*.scss",
+        dest: "dist/css",
     },
     scripts: {
-        src: "./src/js/**/*.js",
-        dest: "./dist/js",
+        src: "src/js/**/*.js",
+        dest: "dist/js",
     },
     images: {
-        src: "./src/images/**/*.{jpg,jpeg,png,svg}",
-        dest: "./dist/images",
+        src: "src/images/**/*.{jpg,jpeg,png,svg,gif}",
+        dest: "dist/images",
     },
     static: {
-        src: "./src/**/*.{php,html,ini,htaccess,xml,ico,json}",
-        dest: "./dist",
+        src: "src/**/*.{php,html,ini,htaccess,xml,ico,json}",
+        dest: "dist",
     },
 };
 
-// define the processors to be run within postcss
-var postcssProcessors = [autoprefixer(), cssnano(), cssmqpacker()];
+// --------------------------------------------------------------------------------------
+// Basic functions
+// --------------------------------------------------------------------------------------
+const clean = () => del(["dist"]);
 
-// set the image compression options
-var imgOptions = [
-    mozjpeg({
-        quality: "86",
-    }),
-    pngquant({
-        quality: [0.7, 0.8],
-    }),
-];
+// --------------------------------------------------------------------------------------
+// SCSS/CSS functions
+// --------------------------------------------------------------------------------------
+const postcssProcessors = [autoprefixer(), cssnano(), cssmqpacker()];
 
-// Styles Processing function. Check for changes, process SASS
-// minify, group media queries and remove unused selectors
 function styles() {
     return gulp
         .src(paths.styles.src)
-        .pipe(plugins.changed(paths.styles.dest))
-        .pipe(plugins.sass())
-        .pipe(plugins.postcss(postcssProcessors))
-        .pipe(gulp.dest(paths.styles.dest))
-        .pipe(browserSync.reload({
-            stream: true
-        }));
+        .pipe(changed(paths.styles.dest))
+        .pipe(sass())
+        .pipe(postcss(postcssProcessors))
+        .pipe(gulp.dest(paths.styles.dest));
 }
 
-// cleaning function. Will usually only be run before build.
-function clean() {
-    return del(["./dist/.*", "./dist/**/*"]).then((paths) => {
-        console.log("Deleted files and folders:\n", paths.join("\n"));
-    });
-}
+// --------------------------------------------------------------------------------------
+// Javascript functions
+// --------------------------------------------------------------------------------------
 
-// concatenate and uglify javascript
 function scripts() {
     return gulp
         .src(paths.scripts.src)
-        .pipe(plugins.changed(paths.scripts.dest))
-        .pipe(plugins.concat("main.js"))
-        .pipe(plugins.terser())
-        .pipe(gulp.dest(paths.scripts.dest))
-        .pipe(browserSync.reload({
-            stream: true
-        }));
+        .pipe(changed(paths.scripts.dest))
+        .pipe(concat("main.js"))
+        .pipe(terser())
+        .pipe(gulp.dest(paths.scripts.dest));
 }
+
+// --------------------------------------------------------------------------------------
+// Image functions
+// --------------------------------------------------------------------------------------
+
+// // set the image compression options
+var imgOptions = [
+    // .png
+    pngquant({
+        speed: 1,
+        quality: [0.95, 1], //lossy settings
+    }),
+    zopfli({
+        more: true,
+        // iterations: 50 // very slow but more effective
+    }),
+
+    // .gif
+    giflossy({
+        optimizationLevel: 3,
+        optimize: 3, //keep-empty: Preserve empty transparent frames
+        lossy: 2,
+    }),
+
+    //svg
+    imagemin.svgo({
+        plugins: [
+            {
+                removeViewBox: false,
+            },
+        ],
+    }),
+
+    // .jpg
+    mozjpeg({
+        quality: 90,
+        progressive: true,
+    }),
+];
 
 // processing images
 function images() {
     return gulp
         .src(paths.images.src)
-        .pipe(plugins.changed(paths.images.dest))
+        .pipe(changed(paths.images.dest))
         .pipe(
-            plugins.imagemin(imgOptions, {
-                verbose: true,
-            })
+            cache(
+                imagemin(imgOptions, {
+                    verbose: true,
+                })
+            )
         )
-        .pipe(gulp.dest(paths.images.dest))
-        .pipe(browserSync.reload({
-            stream: true
-        }));
+        .pipe(gulp.dest(paths.images.dest));
 }
 
-// copy static files, specifically including dot files like .htaccess.
+// --------------------------------------------------------------------------------------
+// Static files functions
+// --------------------------------------------------------------------------------------
+
 function static() {
     return gulp
         .src(paths.static.src, {
             dot: true,
         })
-        .pipe(plugins.changed(paths.static.dest))
-        .pipe(gulp.dest(paths.static.dest))
-        .pipe(browserSync.reload({
-            stream: true
-        }));
+        .pipe(changed(paths.static.dest))
+        .pipe(gulp.dest(paths.static.dest));
 }
 
-function browser() {
-    browserSync.init({
-        server: "./dist",
+// --------------------------------------------------------------------------------------
+// browser-sync functions
+// --------------------------------------------------------------------------------------
+const server = browserSync.create();
+
+function reload(done) {
+    server.reload();
+    done();
+}
+
+function serve(done) {
+    server.init({
+        server: {
+            baseDir: "dist",
+        },
     });
-
-    // gulp.watch("./dist/**/*").on("change", browserSync.reload);
+    done();
 }
+
+// --------------------------------------------------------------------------------------
+// Gulp functions/tasks
+// --------------------------------------------------------------------------------------
 
 // watch task
 function watch() {
-    gulp.watch(paths.scripts.src, scripts);
-    gulp.watch(paths.styles.src, styles);
-    gulp.watch(paths.images.src, images);
-    gulp.watch(paths.static.src, static);
+    gulp.watch(paths.styles.src, gulp.series(styles, reload));
+    gulp.watch(paths.scripts.src, gulp.series(scripts, reload));
+    gulp.watch(paths.images.src, gulp.series(images, reload));
+    gulp.watch(paths.static.src, gulp.series(static, reload));
 }
 
-//define build process, whether tasks run in parallel or series.
-var build = gulp.series(clean, static, gulp.parallel(styles, scripts, images));
+const build = gulp.series(clean, gulp.parallel(styles, scripts, images, static));
 
-//define standalone tasks
-gulp.task("styles", styles);
-gulp.task("clean", clean);
-gulp.task("scripts", scripts);
-gulp.task("images", images);
-gulp.task("static", static);
+const dev = gulp.series(build, serve, watch);
 
-gulp.task("watch", watch);
-gulp.task("browser", browser);
-gulp.task("browser-watch", gulp.series(build, gulp.parallel(watch, browser)));
-
-//define build and also set default task as build
-gulp.task("build", build);
-gulp.task("default", build);
+exports.default = dev;
+exports.dev = dev;
+exports.build = build;
