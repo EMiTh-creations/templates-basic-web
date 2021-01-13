@@ -1,59 +1,59 @@
 // https://css-tricks.com/snippets/sass/mixin-manage-breakpoints/
 // https://github.com/sebastianmusial/SSCSS/blob/master/src/mixins/_mixins.scss
 
-// Usage:
-// @include min-screen("small") {
-// @include min-screen("medium") {
-// @include min-screen("large") {
-// @include min-screen("x-large") {
-// and for max-width queries:
-// @include max-screen("small") {
-// @include max-screen("medium") {
-// @include max-screen("large") {
-// @include max-screen("x-large") {
-
 $breakpoints: (
     "small": 640px,
     "medium": 768px,
     "large": 1024px,
     "x-large": 1280px,
+    "xx-large": 1400px,
 ) !default;
 
-/// Mixin to manage responsive breakpoints
-/// @author emilyjt
-/// @param {String} $breakpoint - Breakpoint name
-/// @require $breakpoints
-@mixin min-screen($breakpoint) {
-    @if map-has-key($breakpoints, $breakpoint) {
-        $width: map_get($breakpoints, $breakpoint);
-
-        @media screen and (min-width: $width) {
-            @content;
-        }
-    }
-
-    // If the key doesn't exist in the map
-    @else {
-        @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. " + "Available breakpoints are: #{map-keys($breakpoints)}.";
-    }
-}
+// Example usage:
+//
+// @include respond-to("medium")
+// @include respond-to("medium", "max")
+// @include respond-to("medium", "large")
+//
 
 /// Mixin to manage responsive breakpoints
 /// @author emilyjt
 /// @param {String} $breakpoint - Breakpoint name
 /// @require $breakpoints
-@mixin max-screen($breakpoint) {
+@mixin respond-to($breakpoint, $arg: false) {
+    // The first check, is to see if the breakpoint exists
     @if map-has-key($breakpoints, $breakpoint) {
-        $width: map_get($breakpoints, $breakpoint);
-        $width: $width - 1px;
+        // If an argument is provided, and it is not "min"
+        @if $arg and ($arg != min) {
+            // check if the provided argument is "max", and if it is we set up a max screen media query
+            @if $arg == max {
+                $width: map_get($breakpoints, $breakpoint);
+                $width: $width - 1px;
 
-        @media screen and (max-width: $width) {
-            @content;
+                @media screen and (max-width: $width) {
+                    @content;
+                }
+                // check if the provided argument is a breakpoint
+            } @else if map-has-key($breakpoints, $arg) {
+                $width: map_get($breakpoints, $breakpoint);
+
+                $width-max: map_get($breakpoints, $arg);
+                $width-max: $width-max - 1px;
+
+                @media screen and (min-width: $width) and (max-width: $width-max) {
+                    @content;
+                }
+            } @else {
+                @warn "`#{$arg}` is not a valid parameter.";
+            }
+        } @else {
+            $width: map_get($breakpoints, $breakpoint);
+
+            @media screen and (min-width: $width) {
+                @content;
+            }
         }
-    }
-
-    // If the key doesn't exist in the map
-    @else {
+    } @else {
         @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. " + "Available breakpoints are: #{map-keys($breakpoints)}.";
     }
 }

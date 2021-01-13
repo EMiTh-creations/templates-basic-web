@@ -1,0 +1,24 @@
+.container {
+    margin: {
+        left: auto;
+        right: auto;
+    }
+
+    width: 100%;
+
+    @include respond-to("small") {
+        max-width: 640px;
+    }
+
+    @include respond-to("medium") {
+        max-width: 768px;
+    }
+
+    @include respond-to("large") {
+        max-width: 1024px;
+    }
+
+    @include respond-to("x-large") {
+        max-width: 1280px;
+    }
+}

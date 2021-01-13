@@ -1,23 +1,19 @@
 // ###############################################################
 // # Do not modify the imports below
 // ###############################################################
-
-// Globals
 @import "globals/reset";
-@import "globals/breakpoints";
+
+@import "globals/fonts";
+@import "globals/variables";
 @import "globals/colours";
-@import "globals/spacing";
+
+@import "globals/breakpoints";
 @import "globals/typography";
 @import "globals/utilities";
-@import "globals/grid.scss";
-//
-
-@import "components/container";
-@import "components/section";
-@import "components/navbar";
-
+@import "globals/container";
 // ###############################################################
 // # Do not modify the imports above
 // ###############################################################
 
 // Now we can import anything the project needs, such as:
+@import "components/navbar";

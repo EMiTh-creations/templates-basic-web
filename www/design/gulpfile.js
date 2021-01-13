@@ -46,6 +46,10 @@ const paths = {
         src: "src/**/*.{php,html,ini,htaccess,xml,ico,json}",
         dest: "dist",
     },
+    fonts: {
+        src: "src/fonts/**/*.{woff, woff2}",
+        dest: "dist/fonts",
+    },
 };
 
 // --------------------------------------------------------------------------------------
@@ -92,7 +96,7 @@ var imgOptions = [
         quality: [0.95, 1], //lossy settings
     }),
     zopfli({
-        more: true,
+        // more: true,
         // iterations: 50 // very slow but more effective
     }),
 
@@ -147,6 +151,13 @@ function static() {
         .pipe(gulp.dest(paths.static.dest));
 }
 
+function fonts() {
+    return gulp
+        .src(paths.fonts.src)
+        .pipe(changed(paths.fonts.dest))
+        .pipe(gulp.dest(paths.fonts.dest));
+}
+
 // --------------------------------------------------------------------------------------
 // browser-sync functions
 // --------------------------------------------------------------------------------------
@@ -176,9 +187,10 @@ function watch() {
     gulp.watch(paths.scripts.src, gulp.series(scripts, reload));
     gulp.watch(paths.images.src, gulp.series(images, reload));
     gulp.watch(paths.static.src, gulp.series(static, reload));
+    gulp.watch(paths.fonts.src, gulp.series(fonts, reload));
 }
 
-const build = gulp.series(clean, gulp.parallel(styles, scripts, images, static));
+const build = gulp.series(clean, gulp.parallel(styles, scripts, fonts, images, static));
 
 const dev = gulp.series(build, serve, watch);
 
