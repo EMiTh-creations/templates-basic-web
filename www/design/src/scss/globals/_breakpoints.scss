@@ -30,7 +30,7 @@ $breakpoints: (
                 $width: map_get($breakpoints, $breakpoint);
                 $width: $width - 1px;
 
-                @media screen and (max-width: $width) {
+                @media screen and (max-width: em($width)) {
                     @content;
                 }
                 // check if the provided argument is a breakpoint
@@ -40,7 +40,7 @@ $breakpoints: (
                 $width-max: map_get($breakpoints, $arg);
                 $width-max: $width-max - 1px;
 
-                @media screen and (min-width: $width) and (max-width: $width-max) {
+                @media screen and (min-width: em($width)) and (max-width: em($width-max)) {
                     @content;
                 }
             } @else {
@@ -49,7 +49,7 @@ $breakpoints: (
         } @else {
             $width: map_get($breakpoints, $breakpoint);
 
-            @media screen and (min-width: $width) {
+            @media screen and (min-width: em($width)) {
                 @content;
             }
         }

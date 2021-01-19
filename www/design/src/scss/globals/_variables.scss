@@ -1,1 +1,4 @@
-$global-padding: 0 2rem;
+$global-padding-horizontal: rem(16px);
+$global-padding-vertical: rem(16px);
+$global-padding: $global-padding-vertical $global-padding-horizontal;
+$section-margin: 0rem 0;

@@ -1,0 +1,17 @@
+@mixin global-padding() {
+    padding: $global-padding;
+}
+
+@mixin global-padding-x() {
+    padding: {
+        left: $global-padding-horizontal;
+        right: $global-padding-horizontal;
+    }
+}
+
+@mixin global-padding-y() {
+    padding: {
+        top: $global-padding-vertical;
+        bottom: $global-padding-vertical;
+    }
+}

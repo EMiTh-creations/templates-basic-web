@@ -1,4 +1,4 @@
-$navbar-height: 6.25rem; // this equates to 100 pixels with a default font size of 16px
+$navbar-height: rem(100px); // this equates to 100 pixels with a default font size of 16px
 
 .navbar {
     // colors
@@ -32,10 +32,16 @@ $navbar-height: 6.25rem; // this equates to 100 pixels with a default font size 
         // to stop the content from taking up too much of the width of the screen
         // on a mobile screen, this will display as a flex column (vertical)
         // and we will center the content horizontally (align-items)
+
+        @include container();
+
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: $global-padding; // this is so the navbar doesn't touch the edges of the screen on a mobile device
+        padding: {
+            left: $global-padding-horizontal;
+            right: $global-padding-horizontal;
+        } // this is so the navbar doesn't touch the edges of the screen on a mobile device
     }
 
     &__mobile {
@@ -57,20 +63,20 @@ $navbar-height: 6.25rem; // this equates to 100 pixels with a default font size 
         // navbar__brand
         // ---
         // this is the company logo
-        font-size: 2rem;
+        font-size: rem(32px);
 
         // // The below code is an example for images
-        // min-width: 14.0625rem; // this is 225px at a font size of 16px
+        // min-width: rem(225px); // this is 225px at a font size of 16px
         // width: 100%;
-        // max-width: 17.1875rem; // this is 275px at a font size of 16px
+        // max-width: rem(275px); // this is 275px at a font size of 16px
     }
 
     &__hamburger {
         // navbar__hamburger
         // ---
         // this is the menu button for mobiles
-        font-size: 2.5rem;
-        padding: 0 1rem;
+        font-size: rem(40px);
+        padding: 0 rem(16px);
         cursor: pointer;
     }
 
@@ -81,17 +87,17 @@ $navbar-height: 6.25rem; // this equates to 100 pixels with a default font size 
         // by default, on a mobile screen, these should be hidden
         display: none;
 
-        margin: 1rem 0;
+        margin: rem(16px) 0;
         width: 100%;
 
-        font-size: 1.1rem; // this is 24px with 16px font
+        font-size: rem(17px); // this is 24px with 16px font
 
         &.active {
             // when the navbar is open, we are going to display the contents as a grid
             display: grid;
             grid-template-columns: 1fr;
             grid-auto-flow: row;
-            row-gap: 0.5rem; // this is 8px with 16px font
+            row-gap: rem(8px); // this is 8px with 16px font
             place-items: center;
         }
     }
@@ -105,7 +111,7 @@ $navbar-height: 6.25rem; // this equates to 100 pixels with a default font size 
     &__link {
         // navbar__link
         // ---
-        padding: 0.5rem 0;
+        padding: rem(8px) 0;
         display: block;
         text-align: center;
         cursor: pointer;
@@ -154,7 +160,7 @@ $navbar-height: 6.25rem; // this equates to 100 pixels with a default font size 
             display: grid;
             grid-template-rows: 1fr;
             grid-auto-flow: column;
-            column-gap: 0.5rem;
+            column-gap: rem(8px);
             margin: 0; // remove the margin at the top and bottom
 
             // the below styles stop the bar from taking up all the width of the navbar
@@ -162,7 +168,7 @@ $navbar-height: 6.25rem; // this equates to 100 pixels with a default font size 
         }
 
         &__link {
-            padding: 0.5rem 1rem;
+            padding: rem(8px) rem(16px);
         }
     }
 }

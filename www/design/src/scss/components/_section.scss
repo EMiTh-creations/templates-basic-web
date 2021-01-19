@@ -1,0 +1,54 @@
+.section {
+    margin: $section-margin;
+
+    &__content {
+        // section__content
+        // ---
+        @include container();
+        @include global-padding();
+    }
+
+    &__header {
+        // section__header
+        // ---
+        display: flex;
+        flex-direction: column;
+        padding: 0 0 rem(32px);
+    }
+
+    &__title {
+        // section__title
+        // ---
+        font-size: rem(48px);
+    }
+
+    &__text {
+        // section__text
+        // ---
+        font-size: rem(24px);
+        color: $dark-blue;
+
+        & + .section__text {
+            // <div class="section__text">
+            // <div class="section__text"> <-- target
+            // <div class="section__text"> <-- target
+            margin-top: rem(16px);
+        }
+    }
+
+    @include respond-to("medium") {
+        &__header {
+            // section__header
+            // ---
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        &__title {
+            // section__title
+            // ---
+            font-size: rem(56px);
+        }
+    }
+}

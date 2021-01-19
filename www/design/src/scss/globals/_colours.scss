@@ -12,3 +12,35 @@ $colours: (
     "white": $white,
     "grey": $grey,
 );
+
+//
+// Colour utilities
+//
+
+// Text
+@each $name, $colour in $colours {
+    .text__colour--#{$name} {
+        color: $colour;
+    }
+}
+
+// //
+// // The below code generates utility classes for background
+// // colours.
+// //
+// @each $name, $colour in $colours {
+//     .background__colour--#{$name} {
+//         background-color: $colour;
+//     }
+// }
+
+//
+// @include background-colour("primary");
+//
+@mixin background-colour($colour) {
+    @if map-has-key($colours, $colour) {
+        background-color: map_get($colours, $colour);
+    } @else {
+        @warn "Unfortunately, no value could be retrieved for `#{$colour}`. " + "Available colours are: #{map-keys($colours)}.";
+    }
+}

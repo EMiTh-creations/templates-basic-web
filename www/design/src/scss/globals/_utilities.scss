@@ -1,15 +1,40 @@
-// https://sass-lang.com/documentation/values/maps
-
-// Text
-@each $name, $colour in $colours {
-    .text__colour--#{$name} {
-        color: $colour;
-    }
+//
+// The following functions convert pixels into rem/em
+// Example:
+//
+// font-size: rem(22px);
+//
+// would produce the following:
+//
+// font-size: 1.375rem;
+//
+@function em($pxValue) {
+    @return #{stripUnit($pxValue) / stripUnit(16px)}em;
 }
 
-// Background
-@each $name, $colour in $colours {
-    .background__colour--#{$name} {
-        background-color: $colour;
-    }
+@function rem($pxValue) {
+    @return #{stripUnit($pxValue) / stripUnit(16px)}rem;
+}
+
+@function stripUnit($value) {
+    @return $value / ($value * 0 + 1);
+}
+
+//
+// https://dev.to/meduzen/write-css-variables-faster-in-scss-1mon
+//
+// Usage:
+//
+// :root {
+//   --primary: #000;
+//   --bg: #fff;
+// }
+//
+// html {
+//     background: v(bg);
+//     color: v(primary);
+//   }
+//
+@function v($var) {
+    @return var(--#{$var});
 }
